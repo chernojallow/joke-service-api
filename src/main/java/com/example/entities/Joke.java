@@ -27,7 +27,6 @@ public class Joke {
         this.longtext = longtext;
     }
 
-
     @Override
     public String toString() {
         return "Joke{" +
