@@ -1,8 +1,13 @@
 package com.example.entities;
 
-public class Joke {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "jokes")
+public class Joke {
+@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "longtext")
     private String longtext;
 
 
