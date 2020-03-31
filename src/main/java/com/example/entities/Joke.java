@@ -6,6 +6,8 @@ public class Joke {
     private String longtext;
 
 
+    public Joke(){};
+
     public Joke(Long id, String longtext) {
         this.id = id;
         this.longtext = longtext;
