@@ -5,8 +5,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "jokes")
 public class Joke {
-@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+     @Column(name = "category")
+      @Enumerated(EnumType.STRING)
+    Category category;
     @Column(name = "longtext")
     private String longtext;
 
@@ -16,6 +20,19 @@ public class Joke {
     public Joke(Long id, String longtext) {
         this.id = id;
         this.longtext = longtext;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Joke(String longtext, Category category ){
+        this.longtext = longtext;
+        this.category = category;
     }
 
     public Long getId() {

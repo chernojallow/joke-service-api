@@ -1,6 +1,7 @@
 package com.example.entities.services;
 
 
+import com.example.entities.Category;
 import com.example.entities.Joke;
 import com.example.repository.JokeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,13 @@ public class JokeService {
     }
 
 
+    public List<Joke> getAllJokesByCategory(Category category) {
+          return jokeRepository.findAll();
+    }
 
+    public Joke deleteJokeById(Joke id) {
+        return jokeRepository.delete(id);
+    }
 }
 
 

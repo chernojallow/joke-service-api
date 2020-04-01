@@ -1,6 +1,7 @@
 package com.example.service;
 
 
+import com.example.entities.Category;
 import com.example.entities.Joke;
 import com.example.entities.services.JokeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,8 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -40,7 +43,7 @@ public class JokeControllerTest {
     void createJokes() throws Exception {
 
 
-        Joke joke = new Joke(1L, "Lets joke");
+        Joke joke = new Joke( "Lets joke", Category.DADJOKES);
 
         String newCarJson = mapper.writeValueAsString(joke);
         when(jokeController.createJokes(ArgumentMatchers.any(Joke.class))).thenReturn(joke);
@@ -48,7 +51,8 @@ public class JokeControllerTest {
         mockMvc.perform(post(baseUrl).content(newCarJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(joke.getId()))
-                .andExpect(jsonPath("$.longtext").value(joke.getLongtext()));
+                .andExpect(jsonPath("$.longtext").value(joke.getLongtext()))
+                .andExpect(jsonPath("$.category").value(joke.getCategory()));
     }
 
 
@@ -67,6 +71,39 @@ public class JokeControllerTest {
 
     }
 
+
+    @Test
+    void getAllJokesByCategory() throws Exception {
+
+        // setup
+        List<Joke> jokes = new ArrayList<>();
+
+        Joke joke = new Joke();
+        jokes.add(joke);
+
+        //Exercise
+        when(jokeController.getAllJokesByCategory(Category.DADJOKES)).thenReturn(jokes);
+        mockMvc.perform(get(baseUrl).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }
+
+
+    @Test
+    void deleteJokeById(@PathVariable Long id) throws Exception {
+
+        Joke joke = new Joke( "Lets joke", Category.DADJOKES);
+
+        String newCarJson = mapper.writeValueAsString(joke);
+        when(jokeController.deleteJokeById(ArgumentMatchers.any(Joke.class))).thenReturn(joke);
+
+        mockMvc.perform(post(baseUrl).content(newCarJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(joke.getId()))
+                .andExpect(jsonPath("$.longtext").value(joke.getLongtext()));
+
+
+    }
 
 
 
